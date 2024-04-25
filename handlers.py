@@ -27,9 +27,9 @@ async def start_handler(msg: Message):
 async def menu_cmd(message: types.Message, state=FSMContext):
     await message.answer("я называю действие, а ты посредством кнопок или словами Да/Нет отвечаешь, интересно ли оно тебе и хотел/a ли бы ты этому научиться")
     await state.set_state(main_states.tech)
-    await message.answer(config.questions_tech[0],reply_markup=kb.started_kb)
+    await message.answer(config.questions_tech[0],reply_markup=kb.started_kb)     #отправляет 1 вопрос для сработки хендлера
     await state.update_data(tech2=0)
-    await state.update_data(tech1=0)
+    await state.update_data(tech1=0) #подготавливает для хранения данных
     await state.update_data(current_question_tech=1)
     
 
@@ -37,14 +37,14 @@ async def menu_cmd(message: types.Message, state=FSMContext):
 async def techprocces(message: Message, state=FSMContext):
     tech =  await state.get_data()
     
-    if tech["tech2"] < 4 and tech["current_question_tech"] < len(config.questions_tech):
+    if tech["tech2"] < 4 and tech["current_question_tech"] < len(config.questions_tech): #проверяет по состоянию, на количество ответов "нет" и кол-ву заданных вопросов
         if message.text.lower() == "да":
-            tech["tech1"] +=1
+            tech["tech1"] +=1   #добавляет +1 в счетчек ответов да, если ответ "да"
             await state.update_data(tech1=tech["tech1"])
         elif message.text.lower() == "нет":
-            tech["tech2"] +=1
+            tech["tech2"] +=1 #добавляет +1 в счетчек ответов нет, если ответ "нет"
             await state.update_data(tech2=tech["tech2"])
-        await message.answer(config.questions_tech[tech["current_question_tech"]],reply_markup=kb.started_kb)
+        await message.answer(config.questions_tech[tech["current_question_tech"]],reply_markup=kb.started_kb)  #задает вопрос из конфиг файла
         tech["current_question_tech"] += 1
         await state.update_data(current_question_tech=tech["current_question_tech"])  
         
@@ -123,20 +123,20 @@ async def economprocces(message: Message, state=FSMContext):
 async def user_result(message: Message, state=FSMContext):
     data = await state.get_data()
     result = {}
-    keys_to_extract= ["it1","tvorch1","tech1","econom1"]
+    keys_to_extract= ["it1","tvorch1","tech1","econom1"]  #собирает только нужные ключи
     for key in keys_to_extract:
         if key in data:
             result[key] = data[key]
-    print(result)
-    maxvalue = float('-inf')
+            
+    maxvalue = float('-inf') # вычисляет ключ с самым большим колвом ответов "да"
     maxkey = None
     for key, value in result.items():
         if value > maxvalue:
                 maxvalue = value
                 maxkey = key
-    print(maxkey)
-    if maxkey == "it1":
-        await  utils.it_end(message)
+            
+    if maxkey == "it1": #сравнивает нужный ключ с данным
+        await  utils.it_end(message) 
     elif maxkey == "tech1":
         await utils.tech_end(message)
     elif maxkey == "tvorch1":
