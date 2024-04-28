@@ -8,7 +8,7 @@ from aiogram.fsm.state import State, StatesGroup
 import config
 import utils
 
-router = Router()  # Создаем экземпляр Router
+router = Router()  # управляет всеми процессами в файле
 class main_states(StatesGroup):
     #Шаги состояний
     tech = State()
@@ -17,11 +17,11 @@ class main_states(StatesGroup):
     econom = State()
     result = State()
 
-
-@router.message(Command('start'))
+#обрабатыевает команду старт
+@router.message(Command('start')) 
 async def start_handler(msg: Message):
     await msg.answer("Привет ✌️, я профориентационный бот Физтех-колледжа. Я задам тебе вопросы после ответа на которые, я расскажу тебе о твоей предрассположенности к разным видам деятельности", reply_markup=kb.start_kb)
-
+#запускает тест. ставит 1 стейт и обозначает переменные счетчики. срабатывает в случае соотвествующей команды
 @router.message(F.text.lower() == "начать тестирование")
 @router.message(Command("начать тестирование"))
 async def menu_cmd(message: types.Message, state=FSMContext):
@@ -32,7 +32,7 @@ async def menu_cmd(message: types.Message, state=FSMContext):
     await state.update_data(tech1=0) #подготавливает для хранения данных
     await state.update_data(current_question_tech=1)
     
-
+#основной процесс теста, получает ответы да/нет и на основании этого в сохраняет количество ответов в переменные-счетчики
 @router.message(main_states.tech, F.text.lower().in_({"да","нет"}))
 async def techprocces(message: Message, state=FSMContext):
     tech =  await state.get_data()
@@ -55,7 +55,7 @@ async def techprocces(message: Message, state=FSMContext):
         await state.update_data(tvorch2=0)
         await state.update_data(current_question_tvorch=1)
 
-
+#основной процесс теста, получает ответы да/нет и на основании этого в сохраняет количество ответов в переменные-счетчики
 @router.message(main_states.tvorch, F.text.lower().in_({"да","нет"}))
 async def tvorchprocces(message: Message, state=FSMContext):
     tvorch =  await state.get_data()
@@ -79,7 +79,7 @@ async def tvorchprocces(message: Message, state=FSMContext):
         await message.answer(config.questions_it[0])
         await state.update_data(current_question_it=1)
         
-
+#основной процесс теста, получает ответы да/нет и на основании этого в сохраняет количество ответов в переменные-счетчики
 @router.message(main_states.it, F.text.lower().in_({"да","нет"}))
 async def itprocces(message: Message, state=FSMContext):
     it =  await state.get_data()
@@ -120,6 +120,9 @@ async def economprocces(message: Message, state=FSMContext):
     else:
         await state.set_state(main_states.result)
 @router.message(main_states.result)
+#функция подчета результата, собирает все в нужные данные в переменную в 1 блоке
+#второй блок вычесляет тему с самым большим кол-вом ответов "да"
+#3 блок находит подходящий вывод результата 
 async def user_result(message: Message, state=FSMContext):
     data = await state.get_data()
     result = {}
