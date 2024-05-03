@@ -135,14 +135,17 @@ async def user_result(message: Message, state=FSMContext):
     maxkey = None
     for key, value in result.items():
         if value > maxvalue:
-                maxvalue = value
-                maxkey = key
+                maxvalue = value #максимальное значение всех веток 
+                maxkey = key #ключ ветки максимального значения
             
-    if maxkey == "it1": #сравнивает нужный ключ с данным
-        await  utils.it_end(message) 
-    elif maxkey == "tech1":
-        await utils.tech_end(message)
-    elif maxkey == "tvorch1":
-        await utils.tvorch_end(message)
-    elif maxkey == "econom1":
-        await utils.econom_end(message)
+    if maxvalue < 5:
+        await utils.undefined(message)
+    else:
+        if maxkey == "it1":
+            await  utils.it_end(message)
+        elif maxkey == "tech1":
+            await utils.tech_end(message)
+        elif maxkey == "tvorch1":
+            await utils.tvorch_end(message)
+        elif maxkey == "econom1":
+            await utils.econom_end(message)
