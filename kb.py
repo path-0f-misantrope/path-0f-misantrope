@@ -1,7 +1,7 @@
 from aiogram.types import KeyboardButtonPollType, ReplyKeyboardMarkup, KeyboardButton, ReplyKeyboardRemove, InlineKeyboardMarkup, InlineKeyboardButton
 
 
-start_kb = ReplyKeyboardMarkup(
+start_kb = ReplyKeyboardMarkup( #кнопка начинающая тестирования
     keyboard=[
     [KeyboardButton(text="начать тестирование")]
     ],
@@ -19,16 +19,16 @@ started_kb = ReplyKeyboardMarkup(
     input_field_placeholder='Нравится?')
 
 
-fiztech_url = InlineKeyboardButton(
+fiztech_url = InlineKeyboardButton( #инлайн кнопка с ссылкой на сайт колледжа 
     text= "Наш сайт",
     url="https://phystech.pro")
 
-fiztech_tg = InlineKeyboardButton(
+fiztech_tg = InlineKeyboardButton( #инлайн кнопка с ссылкой на ткг коллджа
     text="Наш телеграмм-канал",
     url="https://web.telegram.org/a/#-1001612689610")
         
 
-end_kb = InlineKeyboardMarkup(inline_keyboard=[[fiztech_tg],[fiztech_url]])
+end_kb = InlineKeyboardMarkup(inline_keyboard=[[fiztech_tg],[fiztech_url]]) #форма инлайн кнопки в маркап
 
 
     
