@@ -149,3 +149,4 @@ async def user_result(message: Message, state=FSMContext):
             await utils.tvorch_end(message)
         elif maxkey == "econom1":
             await utils.econom_end(message)
+    await state.clear()
