@@ -135,8 +135,14 @@ async def user_result(message: Message, state=FSMContext):
     maxkey = None
     for key, value in result.items():
         if value > maxvalue:
+
                 maxvalue = value
                 maxkey = key
+
+                maxvalue = value #максимальное значение всех веток 
+                maxkey = key #ключ ветки максимального значения
+            
+
     if maxvalue < 5:
         await utils.undefined(message)
     else:
