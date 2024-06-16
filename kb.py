@@ -11,8 +11,8 @@ start_kb = ReplyKeyboardMarkup( #кнопка начинающая тестир�
 started_kb = ReplyKeyboardMarkup(
     keyboard=[
         [
-        KeyboardButton(text="Да"),
-        KeyboardButton(text="Нет")
+        KeyboardButton(text="Да👍"),
+        KeyboardButton(text="Нет👎")
         ],
     ],
     resize_keyboard=True,
